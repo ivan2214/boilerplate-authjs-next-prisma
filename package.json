@@ -11,7 +11,7 @@
     "template/**/*"
   ],
   "scripts": {
-    "bump": "bumpp --commit --tag --no-push && pnpm publish --access public",
+    "bump": "bumpp --commit --tag --yes --patch --no-push && git push && git push --tags && pnpm publish --access public",
     "prepare-template": "node copy-template.js"
   },
   "keywords": [
