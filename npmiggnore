@@ -5,3 +5,4 @@ pnpm-lock.yaml
 Dockerfile
 docker-compose.yml
 *.log
+.git

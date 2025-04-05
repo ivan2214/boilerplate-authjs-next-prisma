@@ -23,6 +23,8 @@ const targetPath = path.join(
 );
 
 const exclude = [
+  ".git",
+  ".gitignore",
   "node_modules",
   ".next",
   "pnpm-lock.yaml",
