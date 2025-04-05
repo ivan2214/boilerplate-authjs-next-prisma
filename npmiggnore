@@ -1,0 +1,7 @@
+node_modules
+.next
+.env*
+pnpm-lock.yaml
+Dockerfile
+docker-compose.yml
+*.log

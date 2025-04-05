@@ -1,0 +1,35 @@
+{
+  "name": "create-boilerplate-authjs-next-prisma",
+  "version": "1.0.1",
+  "description": "Boilerplate configurable para Next.js con Auth.js y Prisma",
+  "type": "module",
+  "bin": {
+    "create-boilerplate-authjs-next-prisma": "index.js"
+  },
+  "files": [
+    "index.js",
+    "template/**/*"
+  ],
+  "scripts": {
+    "bump": "bumpp --commit --tag --push && pnpm publish --access public",
+    "prepare-template": "node copy-template.js"
+  },
+  "keywords": [
+    "next.js",
+    "auth.js",
+    "prisma",
+    "boilerplate",
+    "template"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "fs-extra": "^11.2.0",
+    "inquirer": "^9.2.15",
+    "ora": "^8.0.1"
+  },
+  "devDependencies": {
+    "bumpp": "^10.1.0"
+  }
+}
