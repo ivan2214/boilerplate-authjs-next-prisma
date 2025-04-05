@@ -1,6 +1,6 @@
 {
   "name": "create-boilerplate-authjs-next-prisma",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Boilerplate configurable para Next.js con Auth.js y Prisma",
   "type": "module",
   "bin": {
@@ -11,8 +11,11 @@
     "template/**/*"
   ],
   "scripts": {
-    "bump": "bumpp --commit --tag --yes --patch --no-push && git push && git push --tags && git add . && git commit -m 'chore: prepare for publish' || echo 'no changes' && pnpm publish --access public",
-    "prepare-template": "node copy-template.js"
+    "prepare-template": "node copy-template.js",
+    "bump": "pnpm prepare-template && bumpp --yes --patch && pnpm publish --access public --no-git-checks",
+    "bump:patch": "pnpm prepare-template && bumpp --yes --patch && pnpm publish --access public --no-git-checks",
+    "bump:minor": "pnpm prepare-template && bumpp --yes --minor && pnpm publish --access public --no-git-checks",
+    "bump:major": "pnpm prepare-template && bumpp --yes --major && pnpm publish --access public --no-git-checks"
   },
   "keywords": [
     "next.js",
