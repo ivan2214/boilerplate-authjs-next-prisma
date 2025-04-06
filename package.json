@@ -1,6 +1,6 @@
 {
   "name": "create-boilerplate-authjs-next-prisma",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "Boilerplate configurable para Next.js con Auth.js y Prisma",
   "type": "module",
   "bin": {
