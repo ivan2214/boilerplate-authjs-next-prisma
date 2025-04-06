@@ -146,87 +146,81 @@ async function main() {
   const spinner = ora("Copiando archivos del template...").start();
 
   try {
-    // Copiar archivos del template al directorio destino
-    await fs.copy(templatePath, targetPath);
-    spinner.succeed("Archivos copiados correctamente");
+    // Crear el directorio del proyecto
+    await fs.ensureDir(targetPath);
 
-    // Actualizar .env
-    spinner.start("Configurando archivo .env...");
-    let envContent = await fs.readFile(path.join(templatePath, ".env"), "utf8");
+    // Copiar archivos del template al directorio destino si existe la carpeta template
+    if (fs.existsSync(templatePath)) {
+      await fs.copy(templatePath, targetPath);
+      spinner.succeed("Archivos de la plantilla copiados correctamente");
+    } else {
+      // Si no existe la carpeta template, crear la estructura básica del proyecto
+      await fs.ensureDir(path.join(targetPath, "src"));
+      await fs.ensureDir(path.join(targetPath, "public"));
+      spinner.succeed("Estructura básica del proyecto creada correctamente");
+    }
 
-    // Reemplazar variables en .env
-    envContent = envContent
-      .replace(/POSTGRES_USER=.*/, `POSTGRES_USER=${envVars.POSTGRES_USER}`)
-      .replace(
-        /POSTGRES_PASSWORD=.*/,
-        `POSTGRES_PASSWORD=${envVars.POSTGRES_PASSWORD}`
-      )
-      .replace(/POSTGRES_DB=.*/, `POSTGRES_DB=${envVars.POSTGRES_DB}`)
-      .replace(/ADMIN_EMAIL=.*/, `ADMIN_EMAIL="${envVars.ADMIN_EMAIL}"`);
+    // Crear y configurar archivo .env
+    spinner.start("Creando y configurando archivo .env...");
 
+    // Crear contenido del archivo .env
+    const envContent = `POSTGRES_USER=${envVars.POSTGRES_USER}
+POSTGRES_PASSWORD=${envVars.POSTGRES_PASSWORD}
+POSTGRES_DB=${envVars.POSTGRES_DB}
+ADMIN_EMAIL="${envVars.ADMIN_EMAIL}"
+`;
+
+    // Escribir el archivo .env
     await fs.writeFile(path.join(targetPath, ".env"), envContent);
-    spinner.succeed("Archivo .env configurado correctamente");
+    spinner.succeed("Archivo .env creado y configurado correctamente");
 
-    // Actualizar .env.local
-    spinner.start("Configurando archivo .env.local...");
-    let envLocalContent = await fs.readFile(
-      path.join(templatePath, ".env.local"),
-      "utf8"
-    );
+    // Crear y configurar archivo .env.local
+    spinner.start("Creando y configurando archivo .env.local...");
 
-    // Reemplazar variables en .env.local
-    envLocalContent = envLocalContent
-      .replace(
-        /NEXTAUTH_SECRET=.*/,
-        `NEXTAUTH_SECRET="${envLocalVars.NEXTAUTH_SECRET}"`
-      )
-      .replace(
-        /AUTH_GITHUB_ID=.*/,
-        `AUTH_GITHUB_ID="${envLocalVars.AUTH_GITHUB_ID}"`
-      )
-      .replace(
-        /AUTH_GITHUB_SECRET=.*/,
-        `AUTH_GITHUB_SECRET="${envLocalVars.AUTH_GITHUB_SECRET}"`
-      )
-      .replace(
-        /AUTH_GOOGLE_ID=.*/,
-        `AUTH_GOOGLE_ID="${envLocalVars.AUTH_GOOGLE_ID}"`
-      )
-      .replace(
-        /AUTH_GOOGLE_SECRET=.*/,
-        `AUTH_GOOGLE_SECRET="${envLocalVars.AUTH_GOOGLE_SECRET}"`
-      )
-      .replace(
-        /NEXTAUTH_URL=.*/,
-        `NEXTAUTH_URL="${envLocalVars.NEXTAUTH_URL}"`
-      );
+    // Crear contenido del archivo .env.local
+    const envLocalContent = `NEXTAUTH_SECRET="${envLocalVars.NEXTAUTH_SECRET}"
+AUTH_GITHUB_ID="${envLocalVars.AUTH_GITHUB_ID}"
+AUTH_GITHUB_SECRET="${envLocalVars.AUTH_GITHUB_SECRET}"
+AUTH_GOOGLE_ID="${envLocalVars.AUTH_GOOGLE_ID}"
+AUTH_GOOGLE_SECRET="${envLocalVars.AUTH_GOOGLE_SECRET}"
+NEXTAUTH_URL="${envLocalVars.NEXTAUTH_URL}"
+`;
 
     await fs.writeFile(path.join(targetPath, ".env.local"), envLocalContent);
-    spinner.succeed("Archivo .env.local configurado correctamente");
+    spinner.succeed("Archivo .env.local creado y configurado correctamente");
 
-    // Actualizar docker-compose.yml
-    spinner.start("Configurando archivo docker-compose.yml...");
-    let dockerComposeContent = await fs.readFile(
-      path.join(templatePath, "docker-compose.yml"),
-      "utf8"
-    );
+    // Crear y configurar archivo docker-compose.yml
+    spinner.start("Creando y configurando archivo docker-compose.yml...");
 
-    // Reemplazar nombre del volumen en docker-compose.yml
-    dockerComposeContent = dockerComposeContent
-      .replace(
-        /- boilerplate-db:\/var\/lib\/postgresql\/data/,
-        `- ${dockerConfig.volumeName}:/var/lib/postgresql/data`
-      )
-      .replace(
-        /boilerplate-db:\s+driver: "local"/,
-        `${dockerConfig.volumeName}:\n    driver: "local"`
-      );
+    // Crear contenido del archivo docker-compose.yml
+    const dockerComposeContent = `version: '3.8'
+
+services:
+  postgres:
+    image: postgres:14
+    container_name: ${projectName}-postgres
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=\${POSTGRES_USER}
+      - POSTGRES_PASSWORD=\${POSTGRES_PASSWORD}
+      - POSTGRES_DB=\${POSTGRES_DB}
+    volumes:
+      - ${dockerConfig.volumeName}:/var/lib/postgresql/data
+
+volumes:
+  ${dockerConfig.volumeName}:
+    driver: "local"
+`;
 
     await fs.writeFile(
       path.join(targetPath, "docker-compose.yml"),
       dockerComposeContent
     );
-    spinner.succeed("Archivo docker-compose.yml configurado correctamente");
+    spinner.succeed(
+      "Archivo docker-compose.yml creado y configurado correctamente"
+    );
 
     console.log(chalk.green("\n✅ Proyecto creado exitosamente!"));
     console.log(chalk.cyan("\nPara comenzar:"));
