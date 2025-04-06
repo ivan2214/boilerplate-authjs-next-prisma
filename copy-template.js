@@ -24,7 +24,6 @@ const targetPath = path.join(
 
 const exclude = [
   ".git",
-  ".gitignore",
   "node_modules",
   ".next",
   "pnpm-lock.yaml",
@@ -57,6 +56,10 @@ async function copyTemplate() {
       filter: (src) => {
         return !exclude.some((pattern) => src.includes(pattern));
       },
+      // Asegurar que se copien todos los archivos, incluidos los que están en directorios con nombres especiales
+      dereference: true,
+      preserveTimestamps: true,
+      recursive: true,
     });
 
     console.log(chalk.green("✅ Template copiado correctamente"));

@@ -151,7 +151,12 @@ async function main() {
 
     // Copiar archivos del template al directorio destino si existe la carpeta template
     if (fs.existsSync(templatePath)) {
-      await fs.copy(templatePath, targetPath);
+      await fs.copy(templatePath, targetPath, {
+        // Asegurar que se copien todos los archivos, incluidos los que están en directorios con nombres especiales
+        dereference: true,
+        preserveTimestamps: true,
+        recursive: true
+      });
       spinner.succeed("Archivos de la plantilla copiados correctamente");
     } else {
       // Si no existe la carpeta template, crear la estructura básica del proyecto
