@@ -168,6 +168,7 @@ async function main() {
 POSTGRES_PASSWORD=${envVars.POSTGRES_PASSWORD}
 POSTGRES_DB=${envVars.POSTGRES_DB}
 ADMIN_EMAIL="${envVars.ADMIN_EMAIL}"
+DATABASE_URL="postgresql://${envVars.POSTGRES_USER}:${envVars.POSTGRES_PASSWORD}@localhost:5432/${envVars.POSTGRES_DB}?schema=public"
 `;
 
     // Escribir el archivo .env
