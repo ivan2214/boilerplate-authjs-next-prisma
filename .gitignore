@@ -23,7 +23,7 @@ pnpm-debug.log*
 Thumbs.db
 
 # Directorios de prueba
-/test-project
+/template/*
 
 # Archivos de IDE
 .idea/
