@@ -52,7 +52,7 @@ async function copyTemplate() {
     fs.ensureDirSync(path.join(__dirname, "template"));
 
     // Copiar archivos
-    await fs.copy(sourcePath, targetPath, {
+    fs.copy(sourcePath, targetPath, {
       filter: (src) => {
         return !exclude.some((pattern) => src.includes(pattern));
       },
