@@ -16,7 +16,11 @@ Un boilerplate configurable para crear aplicaciones Next.js con Auth.js, Prisma 
 Para crear un nuevo proyecto, ejecuta:
 
 ```bash
-pnpm create boilerplate-authjs-next-prisma
+pnpm add -g create-boilerplate-authjs-next-prisma@latest
+```
+
+```bash
+create-boilerplate-authjs-next-prisma
 ```
 
 El asistente te guiará a través de la configuración, solicitándote:
@@ -34,36 +38,22 @@ El asistente te guiará a través de la configuración, solicitándote:
    - URL de la aplicación
 4. Nombre del volumen de Docker
 
-## Desarrollo local
+Para iniciar el proyecto, ejecuta:
 
-Si quieres probar este paquete localmente antes de publicarlo:
-
-1. Clona este repositorio
-2. Instala las dependencias:
-   ```bash
+1. ```bash
+   cd [NOMBRE_DEL_PROYECTO]
+   ```
+2. ```bash
    pnpm install
    ```
-3. Crea un enlace simbólico global:
-   ```bash
-   pnpm link --global
+3. ```bash
+   docker compose up -d
    ```
-4. Ahora puedes usar el paquete localmente:
-   ```bash
-   pnpm create boilerplate-authjs-next-prisma
+4. ```bash
+   pnpm prisma:migrate
    ```
-
-## Publicación
-
-Para publicar este paquete en npm:
-
-1. Asegúrate de tener una cuenta en npm y estar autenticado:
-   ```bash
-   npm login
-   ```
-2. Actualiza la versión en `package.json` si es necesario
-3. Publica el paquete:
-   ```bash
-   npm publish
+5. ```bash
+   pnpm dev
    ```
 
 ## Estructura del proyecto generado
@@ -77,7 +67,3 @@ El proyecto generado incluye:
 - Base de datos PostgreSQL con Prisma
 - Componentes UI con Shadcn UI
 - Docker para la base de datos
-
-## Licencia
-
-MIT
