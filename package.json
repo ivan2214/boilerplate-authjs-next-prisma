@@ -3,6 +3,8 @@
   "version": "1.0.16",
   "description": "Boilerplate configurable para Next.js con Auth.js y Prisma",
   "type": "module",
+  "author": "Iván <bongiovanniivan12@gmail.com> (https://github.com/ivan2214)",
+  "url": "git+https://github.com/ivan2214/boilerplate-authjs-next-prisma.git",
   "bin": {
     "create-boilerplate-authjs-next-prisma": "index.js"
   },
@@ -24,7 +26,6 @@
     "boilerplate",
     "template"
   ],
-  "author": "",
   "license": "MIT",
   "dependencies": {
     "chalk": "^5.3.0",
@@ -34,5 +35,13 @@
   },
   "devDependencies": {
     "bumpp": "^10.1.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ivan2214/boilerplate-authjs-next-prisma"
+  },
+  "bugs": {
+    "url": "https://github.com/ivan2214/boilerplate-authjs-next-prisma/issues"
+  },
+  "homepage": "https://github.com/ivan2214/boilerplate-authjs-next-prisma#readme"
 }
