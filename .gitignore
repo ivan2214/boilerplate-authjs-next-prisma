@@ -22,9 +22,6 @@ pnpm-debug.log*
 .DS_Store
 Thumbs.db
 
-# Directorios de prueba
-/template/*
-
 # Archivos de IDE
 .idea/
 .vscode/
