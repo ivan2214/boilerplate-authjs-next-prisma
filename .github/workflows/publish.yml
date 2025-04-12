@@ -24,6 +24,17 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Verify template directory
+        run: |
+          if [ ! -d "template/authjs-prisma-shadcn-protecteed" ]; then
+            echo "❌ Directory template/authjs-prisma-shadcn-protecteed does not exist!"
+            exit 1
+          fi
+          echo "✅ Directory template/authjs-prisma-shadcn-protecteed exists."
+
+      - name: List files
+        run: ls -R template
+
       - name: Prepare template
         run: pnpm prepare-template
 
