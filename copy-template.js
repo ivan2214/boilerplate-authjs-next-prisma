@@ -51,16 +51,28 @@ async function copyTemplate() {
     // Crear directorio de destino si no existe
     fs.ensureDirSync(path.join(__dirname, "template"));
 
+    // Renombrar temporalmente el archivo .gitignore a gitignore
+    const gitignorePath = path.join(sourcePath, ".gitignore");
+    const tempGitignorePath = path.join(sourcePath, "gitignore");
+    if (fs.existsSync(gitignorePath)) {
+      fs.renameSync(gitignorePath, tempGitignorePath);
+    }
+
     // Copiar archivos
     fs.copy(sourcePath, targetPath, {
       filter: (src) => {
         return !exclude.some((pattern) => src.includes(pattern));
       },
-      // Asegurar que se copien todos los archivos, incluidos los que están en directorios con nombres especiales
       dereference: true,
       preserveTimestamps: true,
       recursive: true,
     });
+
+    // Renombrar el archivo gitignore de vuelta a .gitignore
+    const copiedGitignorePath = path.join(targetPath, "gitignore");
+    if (fs.existsSync(copiedGitignorePath)) {
+      fs.renameSync(copiedGitignorePath, path.join(targetPath, ".gitignore"));
+    }
 
     console.log(chalk.green("✅ Template copiado correctamente"));
   } catch (error) {
