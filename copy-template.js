@@ -59,7 +59,7 @@ async function copyTemplate() {
     }
 
     // Copiar archivos
-    fs.copy(sourcePath, targetPath, {
+    await fs.copy(sourcePath, targetPath, {
       filter: (src) => {
         return !exclude.some((pattern) => src.includes(pattern));
       },
@@ -70,8 +70,29 @@ async function copyTemplate() {
 
     // Renombrar el archivo gitignore de vuelta a .gitignore
     const copiedGitignorePath = path.join(targetPath, "gitignore");
+    const finalGitignorePath = path.join(targetPath, ".gitignore");
+
     if (fs.existsSync(copiedGitignorePath)) {
-      fs.renameSync(copiedGitignorePath, path.join(targetPath, ".gitignore"));
+      try {
+        fs.renameSync(copiedGitignorePath, finalGitignorePath);
+        console.log(
+          chalk.green(
+            "✅ Archivo gitignore renombrado a .gitignore correctamente"
+          )
+        );
+      } catch (error) {
+        console.error(
+          chalk.red(
+            `❌ Error al renombrar gitignore a .gitignore: ${error.message}`
+          )
+        );
+      }
+    } else {
+      console.warn(
+        chalk.yellow(
+          "⚠️ No se encontró el archivo gitignore en el destino para renombrarlo a .gitignore"
+        )
+      );
     }
 
     console.log(chalk.green("✅ Template copiado correctamente"));
